@@ -34,7 +34,7 @@ eg golang
 ```protobuf
 syntax = "proto3";
 
-option go_package = "github.com/Rafaellinos/grpc-go";
+option go_package = "github.com/Rafaellinos/grpc/helloworld";
 
 package helloworld;
 
@@ -52,8 +52,82 @@ service Greeter {
 > On Mac M1, run these commands: `brew install protoc-gen-go` install go generator and add to your ~/.zshrc `export PATH="$PATH:$(go env GOPATH)/bin"`
 
 ```bash
-protoc --go_out=. --go_opt=module=github.com/Rafaellinos/grpc-go --go-grpc_out=. --go-grpc_opt=module=github.com/Rafaellinos/grpc-go helloworld/proto/helloworld.proto
+cd helloworld && protoc --go_out=. --go_opt=module=github.com/Rafaellinos/grpc/helloworld --go-grpc_out=. --go-grpc_opt=module=github.com/Rafaellinos/grpc/helloworld ./proto/helloworld.proto
 ```
+
+### Tipos Escalares - Numericos
+
+- float
+- int32 (para valores negativos, use sint32)
+- int64 (para valores negativos, use sint64)
+- uint32 (sem sinal)
+- uint64 (sem final)
+- sint32
+- sint64
+- fixed32 (valores fixos, bom para valores grandes 2^28)
+- fixed64 (valores fixos, bom para valores grande 2^58)
+- sfixes32 (sempre 4 bytes)
+- sfixed64 (sempre 8 bytes)
+- bool
+- string (utf8 ou ASCI, n pode ser maior que 2ˆ32)
+- bytes (n pode ser maior que 2^32)
+
+- Valores default: numerico = 0, bytes = vazio, string = vazio, bool = false
+- Quando o campo é valor default, n é enviado na msg, mesmo que tenha sido setado.
+
+### Cardinallidade
+
+- campos unicos (singular)
+  - implicit
+  - optional
+- Colecoes: repeated
+- Mapas: maps
+
+```protobuf
+message UserDetails {
+  string name = 1;
+  uint32 age = 2;
+  optional bool is_active = 3;
+}
+```
+
+Quando campos esta com optional, no golang será um ponteiro (`*isActive`) entao é possivel verificar se é `nil`
+Campos do tipo Message (outra referencia) é um ponteiro por default
+
+### Protobuf decoder / wire format
+
+É possível "decodar" o hexadecimal para obter os detalhes da mensagem.
+
+Para gerar a mensagem em formato binario, usa o comando abaixo:
+
+```shell
+protoc --encode=helloworld.GreetRequest helloworld.proto < request.txt > wire_format.bin
+```
+
+Arquivo protobuf text format
+
+```text
+type: 0
+users: [{
+    name: "Rafael"
+    age: 35
+},
+{
+    name: "Yasmin"
+    age: 27
+    is_active: true
+}]
+```
+
+- Wire format (tipos de arquivo binarios)
+  - VARINT (int32, int64, sint64, bool, enum)
+  - I64 (fixed64, sfixed64, double)
+  - LEN (string, bytes, embeedded msgs, packed repeated fields)
+  - I32 (fixed32, sfixed32, double)
+- Estrutura
+  - field number | type (tipo do campo) | payload
+  - Nao é possivel saber o nome do campo pelo wire format, apenas o indice (field number)
+  - Nao é possivel saber com exatidao o tipo do campo, apenas com o contrato (.proto)
 
 ## Golang comandos
 

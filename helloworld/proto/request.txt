@@ -1,0 +1,10 @@
+type: 0
+users: [{
+    name: "Rafael"
+    age: 35
+},
+{
+    name: "Yasmin"
+    age: 27
+    is_active: true
+}]
