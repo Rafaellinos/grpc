@@ -18,11 +18,12 @@ message Person {
 }
 
 message GreetMessage {
-  Person person = 1;
+  repeated Person people = 1;
 }
 
 message GreetReply {
-  string message = 1;
+  map<string, string> people = 1;
+  string wellcome_message = 2;
 }
 
 service Greeter {

@@ -179,7 +179,7 @@ func (x *Person) GetIsActive() bool {
 
 type GreetMessage struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Person        *Person                `protobuf:"bytes,1,opt,name=person,proto3" json:"person,omitempty"`
+	People        []*Person              `protobuf:"bytes,1,rep,name=people,proto3" json:"people,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -214,18 +214,19 @@ func (*GreetMessage) Descriptor() ([]byte, []int) {
 	return file_proto_helloworld_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *GreetMessage) GetPerson() *Person {
+func (x *GreetMessage) GetPeople() []*Person {
 	if x != nil {
-		return x.Person
+		return x.People
 	}
 	return nil
 }
 
 type GreetReply struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Message       string                 `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	People          map[string]string      `protobuf:"bytes,1,rep,name=people,proto3" json:"people,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	WellcomeMessage string                 `protobuf:"bytes,2,opt,name=wellcome_message,json=wellcomeMessage,proto3" json:"wellcome_message,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *GreetReply) Reset() {
@@ -258,9 +259,16 @@ func (*GreetReply) Descriptor() ([]byte, []int) {
 	return file_proto_helloworld_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *GreetReply) GetMessage() string {
+func (x *GreetReply) GetPeople() map[string]string {
 	if x != nil {
-		return x.Message
+		return x.People
+	}
+	return nil
+}
+
+func (x *GreetReply) GetWellcomeMessage() string {
+	if x != nil {
+		return x.WellcomeMessage
 	}
 	return ""
 }
@@ -282,10 +290,14 @@ const file_proto_helloworld_proto_rawDesc = "" +
 	"\x05email\x18\x03 \x01(\tR\x05email\x12\x1b\n" +
 	"\tis_active\x18\x04 \x01(\bR\bisActive\":\n" +
 	"\fGreetMessage\x12*\n" +
-	"\x06person\x18\x01 \x01(\v2\x12.helloworld.PersonR\x06person\"&\n" +
+	"\x06people\x18\x01 \x03(\v2\x12.helloworld.PersonR\x06people\"\xae\x01\n" +
 	"\n" +
-	"GreetReply\x12\x18\n" +
-	"\amessage\x18\x01 \x01(\tR\amessage2\x86\x01\n" +
+	"GreetReply\x12:\n" +
+	"\x06people\x18\x01 \x03(\v2\".helloworld.GreetReply.PeopleEntryR\x06people\x12)\n" +
+	"\x10wellcome_message\x18\x02 \x01(\tR\x0fwellcomeMessage\x1a9\n" +
+	"\vPeopleEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x012\x86\x01\n" +
 	"\aGreeter\x12>\n" +
 	"\bSayHello\x12\x18.helloworld.HelloRequest\x1a\x16.helloworld.HelloReply\"\x00\x12;\n" +
 	"\x05Greet\x12\x18.helloworld.GreetMessage\x1a\x16.helloworld.GreetReply\"\x00B(Z&github.com/Rafaellinos/grpc/helloworldb\x06proto3"
@@ -302,25 +314,27 @@ func file_proto_helloworld_proto_rawDescGZIP() []byte {
 	return file_proto_helloworld_proto_rawDescData
 }
 
-var file_proto_helloworld_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_proto_helloworld_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_proto_helloworld_proto_goTypes = []any{
 	(*HelloRequest)(nil), // 0: helloworld.HelloRequest
 	(*HelloReply)(nil),   // 1: helloworld.HelloReply
 	(*Person)(nil),       // 2: helloworld.Person
 	(*GreetMessage)(nil), // 3: helloworld.GreetMessage
 	(*GreetReply)(nil),   // 4: helloworld.GreetReply
+	nil,                  // 5: helloworld.GreetReply.PeopleEntry
 }
 var file_proto_helloworld_proto_depIdxs = []int32{
-	2, // 0: helloworld.GreetMessage.person:type_name -> helloworld.Person
-	0, // 1: helloworld.Greeter.SayHello:input_type -> helloworld.HelloRequest
-	3, // 2: helloworld.Greeter.Greet:input_type -> helloworld.GreetMessage
-	1, // 3: helloworld.Greeter.SayHello:output_type -> helloworld.HelloReply
-	4, // 4: helloworld.Greeter.Greet:output_type -> helloworld.GreetReply
-	3, // [3:5] is the sub-list for method output_type
-	1, // [1:3] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	2, // 0: helloworld.GreetMessage.people:type_name -> helloworld.Person
+	5, // 1: helloworld.GreetReply.people:type_name -> helloworld.GreetReply.PeopleEntry
+	0, // 2: helloworld.Greeter.SayHello:input_type -> helloworld.HelloRequest
+	3, // 3: helloworld.Greeter.Greet:input_type -> helloworld.GreetMessage
+	1, // 4: helloworld.Greeter.SayHello:output_type -> helloworld.HelloReply
+	4, // 5: helloworld.Greeter.Greet:output_type -> helloworld.GreetReply
+	4, // [4:6] is the sub-list for method output_type
+	2, // [2:4] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_proto_helloworld_proto_init() }
@@ -334,7 +348,7 @@ func file_proto_helloworld_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_helloworld_proto_rawDesc), len(file_proto_helloworld_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
