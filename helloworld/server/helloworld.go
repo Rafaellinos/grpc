@@ -19,9 +19,8 @@ func (s *Server) SayHello(ctx context.Context, request *pb.HelloRequest) (*pb.He
 func (s *Server) Greet(ctx context.Context, request *pb.GreetMessage) (*pb.GreetReply, error) {
 	log.Printf("Greet received!!!")
 
-	
 	if (request.GetPeople() == nil) {
-		// empty response
+		log.Printf("Empty request")
 		return &pb.GreetReply{
 		}, nil
 	}
@@ -32,18 +31,15 @@ func (s *Server) Greet(ctx context.Context, request *pb.GreetMessage) (*pb.Greet
 
 	builder.WriteString("Wellcome ")
 
-	first := true;
-
-	for _, person := range request.GetPeople() {
+	for i, person := range request.GetPeople() {
 		if (!person.IsActive) {
 			continue
 		}
 		mapa[person.Name] = "Your name is " + person.Name + " and your age is " + strconv.Itoa(int(person.Age)) + " and your email is " + person.Email
-		if (!first) {
+		if (i > 0) {
 			builder.WriteString(" And ")
 		}
 		builder.WriteString(person.Name)
-		first = false
 	}
 
 	return &pb.GreetReply{
