@@ -4,6 +4,12 @@ option go_package = "github.com/Rafaellinos/grpc/helloworld";
 
 package helloworld;
 
+enum Sex {
+  NAO_INFORMADO = 0;
+  HOMEM = 1;
+  MULHER = 2;
+}
+
 message HelloRequest {
   string name = 1;
 }
@@ -12,9 +18,10 @@ message HelloReply {
 }
 message Person {
   string name = 1;
-  int32 age = 2;
+  uint32 age = 2;
   string email = 3;
   bool is_active = 4;
+  Sex sex = 5;
 }
 
 message GreetMessage {

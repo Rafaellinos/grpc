@@ -35,7 +35,7 @@ func (s *Server) Greet(ctx context.Context, request *pb.GreetMessage) (*pb.Greet
 		if (!person.IsActive) {
 			continue
 		}
-		mapa[person.Name] = "Your name is " + person.Name + " and your age is " + strconv.Itoa(int(person.Age)) + " and your email is " + person.Email
+		mapa[person.Name] = "Your name is " + person.Name + " and your age is " + strconv.Itoa(int(person.Age)) + " and your email is " + person.Email + " and your sex is " + person.Sex.Enum().String()
 		if (i > 0) {
 			builder.WriteString(" And ")
 		}

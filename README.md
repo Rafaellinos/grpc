@@ -24,10 +24,12 @@
 - Compacto, cross-lang, otimizado e compacto
 - Fornece IDL (interface Definition Language)
   - Mensagens, servicos e arquivo `.proto`.
-- Diagrama: 
+- Diagrama:
   - Crie .proto data structure -> Gere codigo usando protoc compiler -> Compile PB no seu projeto
   - PB classes será usado para serdes
   - Parecido com Avro
+- Contratos desatualizados n geram erros, mas campo sao ignorados
+- Quando adicionar novo campo, boa pratica será usar `optional`
 
 eg golang
 
@@ -128,6 +130,10 @@ users: [{
   - field number | type (tipo do campo) | payload
   - Nao é possivel saber o nome do campo pelo wire format, apenas o indice (field number)
   - Nao é possivel saber com exatidao o tipo do campo, apenas com o contrato (.proto)
+- Field numbers
+  - Nao podem se repetir dentro da mesma msg
+  - 19_000 a 19_999 eh reservado
+  - é possivel reservar numeros
 
 ## Golang comandos
 

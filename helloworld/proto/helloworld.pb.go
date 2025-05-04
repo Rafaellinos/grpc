@@ -21,6 +21,55 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type Sex int32
+
+const (
+	Sex_NAO_INFORMADO Sex = 0
+	Sex_HOMEM         Sex = 1
+	Sex_MULHER        Sex = 2
+)
+
+// Enum value maps for Sex.
+var (
+	Sex_name = map[int32]string{
+		0: "NAO_INFORMADO",
+		1: "HOMEM",
+		2: "MULHER",
+	}
+	Sex_value = map[string]int32{
+		"NAO_INFORMADO": 0,
+		"HOMEM":         1,
+		"MULHER":        2,
+	}
+)
+
+func (x Sex) Enum() *Sex {
+	p := new(Sex)
+	*p = x
+	return p
+}
+
+func (x Sex) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (Sex) Descriptor() protoreflect.EnumDescriptor {
+	return file_proto_helloworld_proto_enumTypes[0].Descriptor()
+}
+
+func (Sex) Type() protoreflect.EnumType {
+	return &file_proto_helloworld_proto_enumTypes[0]
+}
+
+func (x Sex) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use Sex.Descriptor instead.
+func (Sex) EnumDescriptor() ([]byte, []int) {
+	return file_proto_helloworld_proto_rawDescGZIP(), []int{0}
+}
+
 type HelloRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
@@ -112,9 +161,10 @@ func (x *HelloReply) GetMessage() string {
 type Person struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	Age           int32                  `protobuf:"varint,2,opt,name=age,proto3" json:"age,omitempty"`
+	Age           uint32                 `protobuf:"varint,2,opt,name=age,proto3" json:"age,omitempty"`
 	Email         string                 `protobuf:"bytes,3,opt,name=email,proto3" json:"email,omitempty"`
 	IsActive      bool                   `protobuf:"varint,4,opt,name=is_active,json=isActive,proto3" json:"is_active,omitempty"`
+	Sex           Sex                    `protobuf:"varint,5,opt,name=sex,proto3,enum=helloworld.Sex" json:"sex,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -156,7 +206,7 @@ func (x *Person) GetName() string {
 	return ""
 }
 
-func (x *Person) GetAge() int32 {
+func (x *Person) GetAge() uint32 {
 	if x != nil {
 		return x.Age
 	}
@@ -175,6 +225,13 @@ func (x *Person) GetIsActive() bool {
 		return x.IsActive
 	}
 	return false
+}
+
+func (x *Person) GetSex() Sex {
+	if x != nil {
+		return x.Sex
+	}
+	return Sex_NAO_INFORMADO
 }
 
 type GreetMessage struct {
@@ -283,12 +340,13 @@ const file_proto_helloworld_proto_rawDesc = "" +
 	"\x04name\x18\x01 \x01(\tR\x04name\"&\n" +
 	"\n" +
 	"HelloReply\x12\x18\n" +
-	"\amessage\x18\x01 \x01(\tR\amessage\"a\n" +
+	"\amessage\x18\x01 \x01(\tR\amessage\"\x84\x01\n" +
 	"\x06Person\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x10\n" +
-	"\x03age\x18\x02 \x01(\x05R\x03age\x12\x14\n" +
+	"\x03age\x18\x02 \x01(\rR\x03age\x12\x14\n" +
 	"\x05email\x18\x03 \x01(\tR\x05email\x12\x1b\n" +
-	"\tis_active\x18\x04 \x01(\bR\bisActive\":\n" +
+	"\tis_active\x18\x04 \x01(\bR\bisActive\x12!\n" +
+	"\x03sex\x18\x05 \x01(\x0e2\x0f.helloworld.SexR\x03sex\":\n" +
 	"\fGreetMessage\x12*\n" +
 	"\x06people\x18\x01 \x03(\v2\x12.helloworld.PersonR\x06people\"\xae\x01\n" +
 	"\n" +
@@ -297,7 +355,12 @@ const file_proto_helloworld_proto_rawDesc = "" +
 	"\x10wellcome_message\x18\x02 \x01(\tR\x0fwellcomeMessage\x1a9\n" +
 	"\vPeopleEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x012\x86\x01\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01*/\n" +
+	"\x03Sex\x12\x11\n" +
+	"\rNAO_INFORMADO\x10\x00\x12\t\n" +
+	"\x05HOMEM\x10\x01\x12\n" +
+	"\n" +
+	"\x06MULHER\x10\x022\x86\x01\n" +
 	"\aGreeter\x12>\n" +
 	"\bSayHello\x12\x18.helloworld.HelloRequest\x1a\x16.helloworld.HelloReply\"\x00\x12;\n" +
 	"\x05Greet\x12\x18.helloworld.GreetMessage\x1a\x16.helloworld.GreetReply\"\x00B(Z&github.com/Rafaellinos/grpc/helloworldb\x06proto3"
@@ -314,27 +377,30 @@ func file_proto_helloworld_proto_rawDescGZIP() []byte {
 	return file_proto_helloworld_proto_rawDescData
 }
 
+var file_proto_helloworld_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_proto_helloworld_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_proto_helloworld_proto_goTypes = []any{
-	(*HelloRequest)(nil), // 0: helloworld.HelloRequest
-	(*HelloReply)(nil),   // 1: helloworld.HelloReply
-	(*Person)(nil),       // 2: helloworld.Person
-	(*GreetMessage)(nil), // 3: helloworld.GreetMessage
-	(*GreetReply)(nil),   // 4: helloworld.GreetReply
-	nil,                  // 5: helloworld.GreetReply.PeopleEntry
+	(Sex)(0),             // 0: helloworld.Sex
+	(*HelloRequest)(nil), // 1: helloworld.HelloRequest
+	(*HelloReply)(nil),   // 2: helloworld.HelloReply
+	(*Person)(nil),       // 3: helloworld.Person
+	(*GreetMessage)(nil), // 4: helloworld.GreetMessage
+	(*GreetReply)(nil),   // 5: helloworld.GreetReply
+	nil,                  // 6: helloworld.GreetReply.PeopleEntry
 }
 var file_proto_helloworld_proto_depIdxs = []int32{
-	2, // 0: helloworld.GreetMessage.people:type_name -> helloworld.Person
-	5, // 1: helloworld.GreetReply.people:type_name -> helloworld.GreetReply.PeopleEntry
-	0, // 2: helloworld.Greeter.SayHello:input_type -> helloworld.HelloRequest
-	3, // 3: helloworld.Greeter.Greet:input_type -> helloworld.GreetMessage
-	1, // 4: helloworld.Greeter.SayHello:output_type -> helloworld.HelloReply
-	4, // 5: helloworld.Greeter.Greet:output_type -> helloworld.GreetReply
-	4, // [4:6] is the sub-list for method output_type
-	2, // [2:4] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	0, // 0: helloworld.Person.sex:type_name -> helloworld.Sex
+	3, // 1: helloworld.GreetMessage.people:type_name -> helloworld.Person
+	6, // 2: helloworld.GreetReply.people:type_name -> helloworld.GreetReply.PeopleEntry
+	1, // 3: helloworld.Greeter.SayHello:input_type -> helloworld.HelloRequest
+	4, // 4: helloworld.Greeter.Greet:input_type -> helloworld.GreetMessage
+	2, // 5: helloworld.Greeter.SayHello:output_type -> helloworld.HelloReply
+	5, // 6: helloworld.Greeter.Greet:output_type -> helloworld.GreetReply
+	5, // [5:7] is the sub-list for method output_type
+	3, // [3:5] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_proto_helloworld_proto_init() }
@@ -347,13 +413,14 @@ func file_proto_helloworld_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_helloworld_proto_rawDesc), len(file_proto_helloworld_proto_rawDesc)),
-			NumEnums:      0,
+			NumEnums:      1,
 			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
 		GoTypes:           file_proto_helloworld_proto_goTypes,
 		DependencyIndexes: file_proto_helloworld_proto_depIdxs,
+		EnumInfos:         file_proto_helloworld_proto_enumTypes,
 		MessageInfos:      file_proto_helloworld_proto_msgTypes,
 	}.Build()
 	File_proto_helloworld_proto = out.File
