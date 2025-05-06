@@ -340,13 +340,13 @@ const file_proto_helloworld_proto_rawDesc = "" +
 	"\x04name\x18\x01 \x01(\tR\x04name\"&\n" +
 	"\n" +
 	"HelloReply\x12\x18\n" +
-	"\amessage\x18\x01 \x01(\tR\amessage\"\x84\x01\n" +
+	"\amessage\x18\x01 \x01(\tR\amessage\"\x90\x01\n" +
 	"\x06Person\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x10\n" +
 	"\x03age\x18\x02 \x01(\rR\x03age\x12\x14\n" +
 	"\x05email\x18\x03 \x01(\tR\x05email\x12\x1b\n" +
 	"\tis_active\x18\x04 \x01(\bR\bisActive\x12!\n" +
-	"\x03sex\x18\x05 \x01(\x0e2\x0f.helloworld.SexR\x03sex\":\n" +
+	"\x03sex\x18\x05 \x01(\x0e2\x0f.helloworld.SexR\x03sexJ\x04\b\x18\x10\x19J\x04\bE\x10F\":\n" +
 	"\fGreetMessage\x12*\n" +
 	"\x06people\x18\x01 \x03(\v2\x12.helloworld.PersonR\x06people\"\xae\x01\n" +
 	"\n" +

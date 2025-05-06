@@ -16,7 +16,9 @@ message HelloRequest {
 message HelloReply {
   string message = 1;
 }
+
 message Person {
+  reserved 24,69;
   string name = 1;
   uint32 age = 2;
   string email = 3;

@@ -9,7 +9,7 @@
   - Nao funciona com HTTP/1.1
 - HTTP/2
   - Somente formato binario (formato menor)
-  - Multiplexacao 
+  - Multiplexacao
     - Unica comunicacao pode-se enviar varios requestes em paraleleto, ao contratio da 1.1
     - Compressao header com HPACK (enviar apenas cabeçalhos que mudaram)
   - HTTP/1.1 tem pipelining, mas é uma req por ordem
@@ -29,7 +29,6 @@
   - PB classes será usado para serdes
   - Parecido com Avro
 - Contratos desatualizados n geram erros, mas campo sao ignorados
-- Quando adicionar novo campo, boa pratica será usar `optional`
 
 eg golang
 
@@ -130,10 +129,52 @@ users: [{
   - field number | type (tipo do campo) | payload
   - Nao é possivel saber o nome do campo pelo wire format, apenas o indice (field number)
   - Nao é possivel saber com exatidao o tipo do campo, apenas com o contrato (.proto)
-- Field numbers
+- Field numbers (ids/index de campos, como `string name = 1`)
   - Nao podem se repetir dentro da mesma msg
   - 19_000 a 19_999 eh reservado
   - é possivel reservar numeros
+  - Quando adicionar novo campo, boa pratica será usar `optional`
+  - !warning cuidado ao mudar o nome e tipo do campo e manter o mesmo ID, pois o servidor vai considerar como mesmo campo
+  - use `reserved <ID>` para reservar campos, util para evitar erros quando removemos campos
+
+## Modelos de comunicacao gRPC
+
+- unica mensagem, mais simples
+- server streaming (comunicacao constante, mantem comunicacao aberta)
+- client streaming
+- bidirectional streaming
+
+
+## Java spring grpc
+
+- must have the plubin `protobuf-maven-plugin`
+- run `mvn generate-sources` to generate classes based on .proto file
+
+eg:
+
+```protobuf
+syntax = "proto3";
+
+option java_package = "br.com.rafaellino.stockmarket";
+option java_multiple_files = true;
+
+package stock_market;
+
+
+service StockPrice {
+  rpc GetStockPrice (StockRequest) returns (StockResponse);
+}
+
+message StockRequest {
+  string symbol = 1;
+}
+
+message StockResponse {
+  string symbol = 1;
+  double price = 2;
+  int64 timestamp = 3;
+}
+```
 
 ## Golang comandos
 
