@@ -85,6 +85,7 @@ cd helloworld && protoc --go_out=. --go_opt=module=github.com/Rafaellinos/grpc/h
 - Mapas: maps
 
 ```protobuf
+syntax = "proto3";
 message UserDetails {
   string name = 1;
   uint32 age = 2;
@@ -145,12 +146,13 @@ users: [{
 - bidirectional streaming
 
 
-## Java spring grpc
+## Java spring grpc (stockmarket)
 
 - must have the plubin `protobuf-maven-plugin`
 - run `mvn generate-sources` to generate classes based on .proto file
+- :warning: Remember to add target/generated-sources/protobuf/grpc-java and /java in /target as source root
 
-eg:
+eg em java:
 
 ```protobuf
 syntax = "proto3";
@@ -176,6 +178,33 @@ message StockResponse {
 }
 ```
 
+
+## Python grpc (stockmarket_consumer)
+
+Entre no directory stockmarket_consumer
+
+```shell
+python -m venv .venv # crie o virtual environment
+```
+
+```shell
+source .venv/bin/activate # ative o virtual environment
+```
+
+```shell
+pip install -r requirements.txt # instale dependencias
+```
+
+```shell
+python main.py # com a aplicacao stockmarket rodando, execute o main.py
+```
+
+Para gerar o arquivo com base no proto file:
+
+```shell
+python -m grpc_tools.protoc -I . --python_out=. --grpc_python_out=. stock_market.proto
+```
+
 ## Golang comandos
 
 - `go mod download` download dependencies, nao modifica go.mod ou go.sum
@@ -183,3 +212,36 @@ message StockResponse {
 - go.mod = arquivo que define nome do modulo, versao e dependencias
 - go.sum = arquivo que armazena checksums de dependencias baixadas
 - `cd helloworld && go build -o bin/server ./server` buildar o projeto
+
+
+## Timeout vs Deadline
+
+Tempo maximo que o cliente espera pela resposta do servidor. Quando o client chega ao deadline, recebe o erro: `DEADLINE_EXCEEDED`
+
+## Unario (unary)
+
+- Uma unica mensagem, request e response, parecido com HTTP/REST
+
+## Streaming
+
+
+e.g.:
+
+```protobuf
+syntax = "proto3";
+
+message HelloRequest {
+  string name = 1;
+}
+message HelloReply {
+  string message = 1;
+}
+service Greeter {
+  rpc SayHello (HelloRequest) returns (HelloReply);
+  rpc SayHelloStream (HelloRequest) returns (stream HelloReply);
+}
+```
+
+- chave `stream` especifica o tipo
+
+

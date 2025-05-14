@@ -9,7 +9,6 @@ package stock_market;
 
 service StockPrice {
   rpc GetStockPrice (StockRequest) returns (StockResponse);
-  rpc GetStockPriceServerStreaming (StockRequest) returns (stream StockResponse);
 }
 
 message StockRequest {
